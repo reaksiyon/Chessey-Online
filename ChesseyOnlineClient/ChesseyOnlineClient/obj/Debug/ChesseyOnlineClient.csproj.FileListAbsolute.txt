@@ -25,3 +25,4 @@ C:\Users\emir_\OneDrive\Masaüstü\Chessey-Online\Chessey-Online\ChesseyOnlineCl
 C:\Users\emir_\OneDrive\Masaüstü\Chessey-Online\Chessey-Online\ChesseyOnlineClient\ChesseyOnlineClient\obj\Debug\ChesseyOnlineClient.csproj.CopyComplete
 C:\Users\emir_\OneDrive\Masaüstü\Chessey-Online\Chessey-Online\ChesseyOnlineClient\ChesseyOnlineClient\obj\Debug\ChesseyOnlineClient.exe
 C:\Users\emir_\OneDrive\Masaüstü\Chessey-Online\Chessey-Online\ChesseyOnlineClient\ChesseyOnlineClient\obj\Debug\ChesseyOnlineClient.pdb
+C:\Users\emir_\OneDrive\Masaüstü\Chessey-Online\Chessey-Online\ChesseyOnlineClient\ChesseyOnlineClient\bin\Debug\Telepathy.dll

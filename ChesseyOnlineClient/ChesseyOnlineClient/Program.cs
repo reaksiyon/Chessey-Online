@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Threading;
 using Telepathy;
+
 using Console = Colorful.Console;
 
 namespace ChesseyOnlineClient
@@ -13,38 +14,63 @@ namespace ChesseyOnlineClient
     class Program
     {
         static ChessTable CTable = new ChessTable();
-        string IP;
+
+        Telepathy.Client client = new Telepathy.Client();
+        Telepathy.Message msg;
+
         static void Main(string[] args)
         {
             //InitGame();
 
-            //Console.Clear();
+            //Draw();
+            //StartGame();
+            
+            Program program = new Program();
 
+            string IP = "";
 
+            Console.Write("Connect IP: ");
 
-            /*
-            Thread LoginScreen = new Thread(new ThreadStart(LoginThread));
-            LoginScreen.Start();
+            IP = Console.ReadLine();
 
-            StartGame();
-            */
+            program.serverConnect(IP);
+
+            Thread.Sleep(50);
+
+            program.SendClientMSG("");
+
             System.Console.Read();
         }
 
+        public void serverConnect(string ip)
+        {
+            client.Connect(ip, 1337); // ip address
+
+            serverGetMsg();
+            System.Threading.Thread.Sleep(1000);
+        }
 
         public static void StartGame()
         {
-            PlaySound();
+            Console.SetCursorPosition(20, 6);
+            Console.WriteLine("");
+
+            
+
+
         }
+
+        public static void RoundCheck(bool team)
+        {
+            
+
+        }
+
 
         public static void InitGame()
         {
             Draw();
         }
-
-
-
-
 
         public static void PlaySound()
         {
@@ -93,6 +119,53 @@ namespace ChesseyOnlineClient
         {
             CTable.LoginScreenDraw();
             Thread.Sleep(0);
+        }
+
+
+        public void serverGetMsg()
+        {
+            
+            while (client.GetNextMessage(out msg))
+            {
+
+                switch (msg.eventType)
+                {
+                    case Telepathy.EventType.Connected:
+                        Console.Clear();
+
+                        //Console.WriteLine("DEBUG: CONNECTED!");
+
+                        break;
+
+                    case Telepathy.EventType.Data: //msg taken
+
+                        string takenMSG = Encoding.ASCII.GetString(msg.data);
+                        Console.WriteLine(takenMSG);
+
+                        if(takenMSG == "all.connected")
+                        { 
+                        Thread LoginScreen = new Thread(new ThreadStart(LoginThread));
+                        LoginScreen.Start();
+
+                        PlaySound();
+                        }
+
+                        break;
+
+                    case Telepathy.EventType.Disconnected:
+                        Console.Clear();
+                        Console.WriteLine("Disconnected");
+                        break;
+                }
+            }
+        }
+
+        public void SendClientMSG(string msg)
+        {
+            byte[] msgc = Encoding.Default.GetBytes(msg);
+
+            client.Send(msgc);
+            serverGetMsg();
         }
 
     }
