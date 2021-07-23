@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Threading;
+using Telepathy;
 using Console = Colorful.Console;
 
 namespace ChesseyOnlineClient
@@ -12,18 +13,21 @@ namespace ChesseyOnlineClient
     class Program
     {
         static ChessTable CTable = new ChessTable();
-
+        string IP;
         static void Main(string[] args)
         {
-            InitGame();
+            //InitGame();
 
-            Console.Clear();
+            //Console.Clear();
 
+
+
+            /*
             Thread LoginScreen = new Thread(new ThreadStart(LoginThread));
             LoginScreen.Start();
 
             StartGame();
-
+            */
             System.Console.Read();
         }
 
@@ -37,6 +41,10 @@ namespace ChesseyOnlineClient
         {
             Draw();
         }
+
+
+
+
 
         public static void PlaySound()
         {

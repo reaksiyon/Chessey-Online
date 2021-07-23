@@ -117,8 +117,11 @@ namespace ChesseyOnlineClient
                 for (int j = 0; j < 5; j++)
                 {
                     Random rnd = new Random();
+
                     Color randomColor = Color.FromArgb(rnd.Next(0,256), rnd.Next(0,256), rnd.Next(0,256));
+
                     Console.ForegroundColor = randomColor;
+
                     Console.Write(table[i, j] + "  ");
 
                     System.Threading.Thread.Sleep(250);
@@ -127,6 +130,7 @@ namespace ChesseyOnlineClient
             }
 
             Console.ForegroundColor = Color.White;
+
             Draw();
         }
     }
