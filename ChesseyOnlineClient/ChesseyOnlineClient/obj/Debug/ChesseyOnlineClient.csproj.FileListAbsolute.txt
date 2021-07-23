@@ -1,0 +1,9 @@
+C:\Users\emir_\source\repos\ChesseyOnlineClient\ChesseyOnlineClient\bin\Debug\ChesseyOnlineClient.exe.config
+C:\Users\emir_\source\repos\ChesseyOnlineClient\ChesseyOnlineClient\bin\Debug\ChesseyOnlineClient.exe
+C:\Users\emir_\source\repos\ChesseyOnlineClient\ChesseyOnlineClient\bin\Debug\ChesseyOnlineClient.pdb
+C:\Users\emir_\source\repos\ChesseyOnlineClient\ChesseyOnlineClient\obj\Debug\ChesseyOnlineClient.csprojAssemblyReference.cache
+C:\Users\emir_\source\repos\ChesseyOnlineClient\ChesseyOnlineClient\obj\Debug\ChesseyOnlineClient.csproj.CoreCompileInputs.cache
+C:\Users\emir_\source\repos\ChesseyOnlineClient\ChesseyOnlineClient\obj\Debug\ChesseyOnlineClient.exe
+C:\Users\emir_\source\repos\ChesseyOnlineClient\ChesseyOnlineClient\obj\Debug\ChesseyOnlineClient.pdb
+C:\Users\emir_\source\repos\ChesseyOnlineClient\ChesseyOnlineClient\bin\Debug\Colorful.Console.dll
+C:\Users\emir_\source\repos\ChesseyOnlineClient\ChesseyOnlineClient\obj\Debug\ChesseyOnlineClient.csproj.CopyComplete
