@@ -17,11 +17,11 @@ namespace ChesseyOnlineClient
         static void Main(string[] args)
         {
             InitGame();
-
+            /*
             int sg1 = 0,sg2 = 0,sg3 = 0,sg4 = 0;
 
-            Console.WriteLine();
-            Console.WriteLine("Sayi gir 4 tn");
+            //Console.WriteLine();
+            //Console.WriteLine("Sayi gir 4 tn");
 
             sg1 = Int32.Parse(Console.ReadLine());
             sg2 = Int32.Parse(Console.ReadLine());
@@ -31,15 +31,17 @@ namespace ChesseyOnlineClient
             CTable.table[sg3, sg4] = CTable.table[sg1,sg2];
             CTable.table[sg1,sg2] = '■';
 
-            Draw(Color.Yellow);
+            //Draw();
+            */
             System.Console.Read();
         }
 
 
         public static void InitGame()
         {
-            
+
             //team A
+            /*
             CTable.table[0,0] = RedTeam.Pieces[0];
             CTable.table[0, 1] = RedTeam.Pieces[1];
             CTable.table[0, 2] = RedTeam.Pieces[2];
@@ -48,9 +50,12 @@ namespace ChesseyOnlineClient
             CTable.table[1, 1] = RedTeam.Pieces[3];
             CTable.table[1, 2] = RedTeam.Pieces[3];
             CTable.table[1, 3] = RedTeam.Pieces[3];
-            Draw(Color.Red);
+            */
+            Draw();
+            
 
             //team B
+            /*
             CTable.table[4, 0] = YellowTeam.Pieces[0];
             CTable.table[4, 1] = YellowTeam.Pieces[1];
             CTable.table[4, 2] = YellowTeam.Pieces[2];
@@ -59,13 +64,13 @@ namespace ChesseyOnlineClient
             CTable.table[3, 1] = YellowTeam.Pieces[3];
             CTable.table[3, 2] = YellowTeam.Pieces[3];
             CTable.table[3, 3] = YellowTeam.Pieces[3];
-            Draw(Color.Yellow);
+            */
         }
 
 
-        public static void Draw(Color clr)
+        public static void Draw()
         {
-            CTable.Draw(clr);
+            CTable.Draw();
         }
 
 
