@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Threading;
 using Console = Colorful.Console;
 
 namespace ChesseyOnlineClient
@@ -11,62 +12,68 @@ namespace ChesseyOnlineClient
     class Program
     {
         static ChessTable CTable = new ChessTable();
-        static Team RedTeam = new Team();
-        static Team YellowTeam = new Team();
 
         static void Main(string[] args)
         {
             InitGame();
-            /*
-            int sg1 = 0,sg2 = 0,sg3 = 0,sg4 = 0;
 
-            //Console.WriteLine();
-            //Console.WriteLine("Sayi gir 4 tn");
+            Console.Clear();
 
-            sg1 = Int32.Parse(Console.ReadLine());
-            sg2 = Int32.Parse(Console.ReadLine());
-            sg3 = Int32.Parse(Console.ReadLine());
-            sg4 = Int32.Parse(Console.ReadLine());
+            Thread LoginScreen = new Thread(new ThreadStart(LoginThread));
+            LoginScreen.Start();
 
-            CTable.table[sg3, sg4] = CTable.table[sg1,sg2];
-            CTable.table[sg1,sg2] = '■';
+            StartGame();
 
-            //Draw();
-            */
             System.Console.Read();
         }
 
 
-        public static void InitGame()
+        public static void StartGame()
         {
-
-            //team A
-            /*
-            CTable.table[0,0] = RedTeam.Pieces[0];
-            CTable.table[0, 1] = RedTeam.Pieces[1];
-            CTable.table[0, 2] = RedTeam.Pieces[2];
-            CTable.table[0, 3] = RedTeam.Pieces[1];
-            CTable.table[0, 4] = RedTeam.Pieces[0];
-            CTable.table[1, 1] = RedTeam.Pieces[3];
-            CTable.table[1, 2] = RedTeam.Pieces[3];
-            CTable.table[1, 3] = RedTeam.Pieces[3];
-            */
-            Draw();
-            
-
-            //team B
-            /*
-            CTable.table[4, 0] = YellowTeam.Pieces[0];
-            CTable.table[4, 1] = YellowTeam.Pieces[1];
-            CTable.table[4, 2] = YellowTeam.Pieces[2];
-            CTable.table[4, 3] = YellowTeam.Pieces[1];
-            CTable.table[4, 4] = YellowTeam.Pieces[0];
-            CTable.table[3, 1] = YellowTeam.Pieces[3];
-            CTable.table[3, 2] = YellowTeam.Pieces[3];
-            CTable.table[3, 3] = YellowTeam.Pieces[3];
-            */
+            PlaySound();
         }
 
+        public static void InitGame()
+        {
+            Draw();
+        }
+
+        public static void PlaySound()
+        {
+            Console.Beep(261, 250);
+            Console.Beep(329, 250);
+            Console.Beep(261, 250);
+            Console.Beep(329, 250);
+
+            Console.Beep(392, 250);
+            System.Threading.Thread.Sleep(350);
+            Console.Beep(392, 250);
+
+            Console.Beep(261, 250);
+            Console.Beep(329, 250);
+            Console.Beep(261, 250);
+            Console.Beep(329, 250);
+
+            Console.Beep(392, 250);
+            System.Threading.Thread.Sleep(250);
+            Console.Beep(392, 250);
+
+            Console.Beep(261, 250);
+            Console.Beep(493, 250);
+            Console.Beep(440, 250);
+            Console.Beep(392, 250);
+            Console.Beep(349, 250);
+            System.Threading.Thread.Sleep(50);
+            Console.Beep(440, 250);
+            Console.Beep(392, 250);
+            Console.Beep(349, 250);
+            Console.Beep(329, 250);
+            Console.Beep(293, 250);
+            Console.Beep(261, 250);
+            System.Threading.Thread.Sleep(100);
+            Console.Beep(261, 250);
+
+        }
 
         public static void Draw()
         {
@@ -74,5 +81,12 @@ namespace ChesseyOnlineClient
         }
 
 
+        public static void LoginThread()
+        {
+            CTable.LoginScreenDraw();
+            Thread.Sleep(0);
+        }
+
     }
+
 }
