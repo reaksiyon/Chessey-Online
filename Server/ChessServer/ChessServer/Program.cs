@@ -79,7 +79,7 @@ namespace ChessServer
         {
 			byte[] msgc = Encoding.Default.GetBytes("all.connected");
 
-			for (int UID = 0; UID < connectedCount; UID++)
+			for (int UID = 0; UID < connectedCount+10; UID++)
 			{
 				server.Send(UID, msgc);
 			}

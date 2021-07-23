@@ -39,7 +39,11 @@ namespace ChesseyOnlineClient
 
             program.SendClientMSG("");
 
-            System.Console.Read();
+            while(true)
+            { 
+            program.serverGetMsg();
+                Thread.Sleep(50);
+            }
         }
 
         public void serverConnect(string ip)
@@ -134,7 +138,6 @@ namespace ChesseyOnlineClient
                         Console.Clear();
 
                         //Console.WriteLine("DEBUG: CONNECTED!");
-
                         break;
 
                     case Telepathy.EventType.Data: //msg taken
