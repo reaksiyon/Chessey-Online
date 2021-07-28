@@ -38,7 +38,6 @@ namespace ChesseyOnlineClient
 
                 for (int j = 0; j < 5; j++)
                 {
-                    Console.Write(" ");
 
                     if (tableColor[i, j] == 0)
                     {
@@ -63,6 +62,7 @@ namespace ChesseyOnlineClient
 
         public void LoginScreenDraw()
         {
+            
             for (int i = 0; i < 5; i++)
             {
                 for (int j = 0; j < 5; j++)

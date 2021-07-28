@@ -137,7 +137,7 @@ namespace ChesseyOnlineClient
                     case Telepathy.EventType.Connected:
                         //Console.Clear();
 
-                        Console.WriteLine("DEBUG: CONNECTED!");
+                        //Console.WriteLine("DEBUG: CONNECTED!");
                         break;
 
                     case Telepathy.EventType.Data: //msg taken
@@ -148,7 +148,7 @@ namespace ChesseyOnlineClient
 
                         if(takenMSG == "all.connected")
                         {
-                            //Console.Clear();
+                            Console.Clear();
 
                             Thread LoginScreen = new Thread(new ThreadStart(LoginThread));
 

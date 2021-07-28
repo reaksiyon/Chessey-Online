@@ -17,7 +17,6 @@ namespace ChessServer
 
 		public Server server = new Server();
 
-
 		static void Main(string[] args)
 		{
 			Program program = new Program();
@@ -28,11 +27,12 @@ namespace ChessServer
 
 			int session = 0;
 
+			Message msg;
+
 			byte[] wait = Encoding.Default.GetBytes("Please wait for other players..");
 
 			for (; ; )
 			{
-				Message msg;
 
 				if (!program.server.GetNextMessage(out msg))
 				{
@@ -44,34 +44,30 @@ namespace ChessServer
 					{
 						case EventType.Connected:
 
-							connectedCount+=2;
+							connectedCount++;
 
 							session++;
 
 							Console.WriteLine("ConnectedCount:" + connectedCount);
 
-							program.UIDCheck(connectedCount);
-							
-							for (int i = 0; i < connectedCount; i++)
+							program.UIDCheck(msg);
+
+							for (int i = 0; i < msg.connectionId; i++)
 							{
 								program.server.Send(i, wait);
 							}
 
 							Console.WriteLine(msg.connectionId.ToString() + " Connected");
 
-							if (connectedCount > 4 && session == 2)
-                            {
-								program.StartGame(connectedCount);
+							if (session == 2)
+							{
+								program.StartGame(msg);
 
 								session = 0;
-                            }
+							}
 							else
-                            {
-								if(connectedCount <= 4)
-								Console.WriteLine("game is not started because connectedCount is : " + connectedCount + "/5");
-								
-								if(session!=2)
-								Console.WriteLine("game is not started because session is : " + session + "/2");
+							{
+									Console.WriteLine("game is not started because session is : " + session + "/2");
 							}
 
 							break;
@@ -81,16 +77,16 @@ namespace ChessServer
 							Console.WriteLine(Encoding.ASCII.GetString(msg.data));
 
 							//for (int i = connectedCount; i < connectedCount; i++)
-								//program.server.Send(i, msg.data);
+							//program.server.Send(i, msg.data);
 
 							break;
 
 						case EventType.Disconnected:
-							connectedCount -= 2;
+							connectedCount--;
 
 							Console.WriteLine(msg.connectionId.ToString() + " Disconnected");
 							Console.WriteLine("ConnectedCount:" + connectedCount);
-							
+
 							break;
 					}
 				}
@@ -98,29 +94,28 @@ namespace ChessServer
 		}
 
 		Random rndTeam = new Random();
-		public void StartGame(int connectedCount)
-        {
+		public void StartGame(Message msg)
+		{
 			byte[] msgc = Encoding.Default.GetBytes("all.connected");
 
-			for (int i = 1; i <= connectedCount; i++)
-			{
-				server.Send(i, msgc);
-				Console.WriteLine("UID: " + i + " Started to the game!");
-			}
+			server.Send(msg.connectionId, msgc);
+			server.Send(msg.connectionId - 1, msgc);
 
-			RollTeam(connectedCount);
+			Console.WriteLine("UID: " + msg.connectionId + " Started to the game!");
+			Console.WriteLine("UID: " + (msg.connectionId - 1) + " Started to the game!");
+
+			RollTeam(msg);
 		}
 
-		void UIDCheck(int connectedCount)
+		void UIDCheck(Message msg)
         {
-			byte[] uid = Encoding.Default.GetBytes("Your UID: " + connectedCount);
 
-			for (int i = 0; i <= connectedCount+2; i++)
-			{
-				server.Send(i, uid);
-			}
+			byte[] uid = Encoding.Default.GetBytes("Your UID: " + msg.connectionId);
+
+				server.Send(msg.connectionId, uid);
+
 		}
-		public void RollTeam(int connectedCount)
+		public void RollTeam(Message msg)
         {
 			int teamNum = 1;
 			int max_val = 3;
@@ -131,21 +126,25 @@ namespace ChessServer
 				teamNum = rndTeam.Next(1, max_val);
 			}
 
-			byte[] msgc = Encoding.Default.GetBytes("YOUR TURN: ");
-			byte[] msgw = Encoding.Default.GetBytes("Waiting for opponent turn...");
+			byte[] msgc = Encoding.Default.GetBytes("\nYOUR TURN: ");
+			byte[] msgw = Encoding.Default.GetBytes("\nWaiting for opponent turn...");
+
+
+			Console.WriteLine("Random team number: " + teamNum);
 
 			if (teamNum == 1)
             {
-				server.Send(connectedCount-4, msgc);
+				server.Send(msg.connectionId, msgc);
 
-				server.Send(connectedCount-3, msgw);
+				server.Send(msg.connectionId-1, msgw);
 			}
 			else
             {
-				server.Send(connectedCount-3, msgc);
+				server.Send(msg.connectionId-1, msgc);
 
-				server.Send(connectedCount-4, msgw);
+				server.Send(msg.connectionId, msgw);
 			}
+
 		}
 
 		// Token: 0x06000002 RID: 2 RVA: 0x0000213C File Offset: 0x0000033C
