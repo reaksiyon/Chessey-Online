@@ -16,7 +16,7 @@ namespace ChessServer
 		//public bool[] Team = { RED, BLUE };
 
 		public Server server = new Server();
-
+		public bool GameStarted = false;
 		static void Main(string[] args)
 		{
 			Program program = new Program();
@@ -26,6 +26,9 @@ namespace ChessServer
 			int connectedCount = 1;
 
 			int session = 0;
+
+
+			
 
 			Message msg;
 
@@ -78,6 +81,13 @@ namespace ChessServer
 
 							//for (int i = connectedCount; i < connectedCount; i++)
 							//program.server.Send(i, msg.data);
+							if(program.GameStarted == true)
+                            {
+								byte[] message = Encoding.Default.GetBytes(Encoding.ASCII.GetString(msg.data));
+								program.server.Send(msg.connectionId, message);
+
+								program.server.Send(msg.connectionId - 1, message);
+							}
 
 							break;
 
@@ -105,6 +115,7 @@ namespace ChessServer
 			Console.WriteLine("UID: " + (msg.connectionId - 1) + " Started to the game!");
 
 			RollTeam(msg);
+			GameStarted = true;
 		}
 
 		void UIDCheck(Message msg)
@@ -128,7 +139,6 @@ namespace ChessServer
 
 			byte[] msgc = Encoding.Default.GetBytes("\nYOUR TURN: ");
 			byte[] msgw = Encoding.Default.GetBytes("\nWaiting for opponent turn...");
-
 
 			Console.WriteLine("Random team number: " + teamNum);
 

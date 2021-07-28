@@ -8,3 +8,12 @@ C:\Users\emir_\OneDrive\Masaüstü\Chessey-Online\Chessey-Online\Server\ChessSer
 C:\Users\emir_\OneDrive\Masaüstü\Chessey-Online\Chessey-Online\Server\ChessServer\ChessServer\obj\Debug\ChessServer.pdb
 C:\Users\emir_\OneDrive\Masaüstü\Chessey-Online\Chessey-Online\Server\ChessServer\ChessServer\bin\Debug\MRserver.dll
 C:\Users\emir_\OneDrive\Masaüstü\Chessey-Online\Chessey-Online\Server\ChessServer\ChessServer\bin\Debug\MRserver.pdb
+C:\Users\ysfhe\Desktop\Chessey-Online\Server\ChessServer\ChessServer\bin\Debug\ChessServer.exe.config
+C:\Users\ysfhe\Desktop\Chessey-Online\Server\ChessServer\ChessServer\bin\Debug\ChessServer.exe
+C:\Users\ysfhe\Desktop\Chessey-Online\Server\ChessServer\ChessServer\bin\Debug\ChessServer.pdb
+C:\Users\ysfhe\Desktop\Chessey-Online\Server\ChessServer\ChessServer\bin\Debug\MRserver.pdb
+C:\Users\ysfhe\Desktop\Chessey-Online\Server\ChessServer\ChessServer\obj\Debug\ChessServer.csprojAssemblyReference.cache
+C:\Users\ysfhe\Desktop\Chessey-Online\Server\ChessServer\ChessServer\obj\Debug\ChessServer.csproj.CoreCompileInputs.cache
+C:\Users\ysfhe\Desktop\Chessey-Online\Server\ChessServer\ChessServer\obj\Debug\ChessServer.csproj.CopyComplete
+C:\Users\ysfhe\Desktop\Chessey-Online\Server\ChessServer\ChessServer\obj\Debug\ChessServer.exe
+C:\Users\ysfhe\Desktop\Chessey-Online\Server\ChessServer\ChessServer\obj\Debug\ChessServer.pdb
