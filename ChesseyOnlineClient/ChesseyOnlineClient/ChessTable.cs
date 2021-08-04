@@ -42,15 +42,19 @@ namespace ChesseyOnlineClient
                     if (tableColor[i, j] == 0)
                     {
                         Console.Write(table[i, j], Color.White);
+                        //Console.Write("Şuan beyaz oldu");
 
                     }
                     else if (tableColor[i, j] == 1)
                     {
                         Console.Write(table[i, j], Color.Red);
                     }
-                    else
+                    else if (tableColor[i, j] == 2)
                     {
                         Console.Write(table[i, j], Color.Yellow);
+                    } else
+                    {
+                        Console.Write(table[i, j], Color.Blue);
                     }
 
                     Console.Write(" ");
@@ -68,20 +72,19 @@ namespace ChesseyOnlineClient
                 for (int j = 0; j < 5; j++)
                 {
                     Random rnd = new Random();
+                    Color[] ColorList = { Color.Orange, Color.Tomato, Color.Pink, Color.Purple, Color.LightBlue };
+                    
+                    //Color randomColor = Color.FromArgb(255, rnd.Next(0,255), rnd.Next(0,255), rnd.Next(0, 255));
 
-                    Color randomColor = Color.FromArgb(rnd.Next(0,256), rnd.Next(0,256), rnd.Next(0,256));
 
-                    Console.ForegroundColor = randomColor;
-
-                    Console.Write(table[i, j] + "  ");
+                    //Console.ForegroundColor = randomColor;
+                    Console.Write(table[i, j] + "  ", ColorList[j]);
 
                     System.Threading.Thread.Sleep(250);
                 }
                 Console.WriteLine();
             }
-
-            Console.ForegroundColor = Color.White;
-
+            
             Draw();
         }
     }

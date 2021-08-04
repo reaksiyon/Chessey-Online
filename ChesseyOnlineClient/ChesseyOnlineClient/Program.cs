@@ -7,12 +7,13 @@ using System.Drawing;
 using System.Threading;
 using Telepathy;
 
-using Console = Colorful.Console;
+//using Console = Colorful.Console;
 
 namespace ChesseyOnlineClient
 {
     class Program
     {
+        static ChessTable TempTable = new ChessTable();
         static ChessTable CTable = new ChessTable();
 
         Telepathy.Client client = new Telepathy.Client();
@@ -22,9 +23,9 @@ namespace ChesseyOnlineClient
         {
             //InitGame();
 
-            //Draw();
-            //StartGame();
-            
+            Draw();
+            StartGame();
+
             Program program = new Program();
 
             string IP = "";
@@ -39,9 +40,9 @@ namespace ChesseyOnlineClient
 
             program.SendClientMSG("");
 
-            while(true)
-            { 
-            program.serverGetMsg();
+            while (true)
+            {
+                program.serverGetMsg();
                 Thread.Sleep(50);
             }
         }
@@ -58,15 +59,16 @@ namespace ChesseyOnlineClient
         {
             Console.SetCursorPosition(20, 6);
             Console.WriteLine("");
+            Program program = new Program();
+            program.PlayerControl();
 
-            
 
 
         }
 
         public static void RoundCheck(bool team)
         {
-            
+
 
         }
 
@@ -128,7 +130,7 @@ namespace ChesseyOnlineClient
 
         public void serverGetMsg()
         {
-            
+
             while (client.GetNextMessage(out msg))
             {
 
@@ -146,7 +148,7 @@ namespace ChesseyOnlineClient
 
                         Console.WriteLine(takenMSG);
 
-                        if(takenMSG == "all.connected")
+                        if (takenMSG == "all.connected")
                         {
                             Console.Clear();
 
@@ -177,6 +179,51 @@ namespace ChesseyOnlineClient
             serverGetMsg();
         }
 
-    }
+        public void PlayerControl()
+        {
+            ConsoleKeyInfo keyinfo;
+            int x = 2;
+            int y = 2;
 
+            while (true)
+            {
+                keyinfo = Console.ReadKey();
+
+                
+
+                if (keyinfo.Key == ConsoleKey.Enter)
+                    break;
+
+                if (keyinfo.Key == ConsoleKey.RightArrow)
+                {
+                    y++;
+                    CTable.tableColor[x, y-1] = TempTable.tableColor[x, y-1];
+
+                }
+
+                if (keyinfo.Key == ConsoleKey.LeftArrow)
+                {
+                    y--;
+                    CTable.tableColor[x, y+1] = TempTable.tableColor[x, y+1];
+                }
+
+                if (keyinfo.Key == ConsoleKey.UpArrow)
+                {
+                    x--;
+                    CTable.tableColor[x + 1, y] = TempTable.tableColor[x + 1, y];
+                }
+
+                if (keyinfo.Key == ConsoleKey.DownArrow)
+                {
+                    x++;
+                    CTable.tableColor[x - 1, y] = TempTable.tableColor[x - 1, y];
+                }
+                CTable.tableColor[x, y] = 3;
+                Draw();
+
+            }
+
+
+        }
+    }
 }
