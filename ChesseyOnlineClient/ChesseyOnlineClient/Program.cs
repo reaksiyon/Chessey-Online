@@ -13,18 +13,22 @@ namespace ChesseyOnlineClient
 {
     class Program
     {
-        static ChessTable TempTable = new ChessTable();
-        static ChessTable CTable = new ChessTable();
+        public static ChessTable CTable = new ChessTable();
+
+        static Player player = new Player();
+        static Music music = new Music();
 
         Telepathy.Client client = new Telepathy.Client();
         Telepathy.Message msg;
+
+        bool isGameStart = false;
 
         static void Main(string[] args)
         {
             //InitGame();
 
-            Draw();
-            StartGame();
+            //Draw();
+            //StartGame();
 
             Program program = new Program();
 
@@ -60,15 +64,16 @@ namespace ChesseyOnlineClient
             Console.SetCursorPosition(20, 6);
             Console.WriteLine("");
             Program program = new Program();
-            program.PlayerControl();
-
-
 
         }
 
-        public static void RoundCheck(bool team)
+        public static void RoundCheck(string takenMSG)
         {
+            if (takenMSG != "RED_TURN" && takenMSG != "YELLOW_TURN" && player.myTeam == "null")
+                return;
 
+            //Console.WriteLine("[DEBUG] -> TAKENMSG IS SUCCESFULLY SEND TO ROUNDCHECK! : " + takenMSG);
+            player.PlayerControl(takenMSG);
 
         }
 
@@ -78,42 +83,7 @@ namespace ChesseyOnlineClient
             Draw();
         }
 
-        public static void PlaySound()
-        {
-            Console.Beep(261, 250);
-            Console.Beep(329, 250);
-            Console.Beep(261, 250);
-            Console.Beep(329, 250);
-
-            Console.Beep(392, 250);
-            System.Threading.Thread.Sleep(350);
-            Console.Beep(392, 250);
-
-            Console.Beep(261, 250);
-            Console.Beep(329, 250);
-            Console.Beep(261, 250);
-            Console.Beep(329, 250);
-
-            Console.Beep(392, 250);
-            System.Threading.Thread.Sleep(250);
-            Console.Beep(392, 250);
-
-            Console.Beep(261, 250);
-            Console.Beep(493, 250);
-            Console.Beep(440, 250);
-            Console.Beep(392, 250);
-            Console.Beep(349, 250);
-            System.Threading.Thread.Sleep(50);
-            Console.Beep(440, 250);
-            Console.Beep(392, 250);
-            Console.Beep(349, 250);
-            Console.Beep(329, 250);
-            Console.Beep(293, 250);
-            Console.Beep(261, 250);
-            System.Threading.Thread.Sleep(100);
-            Console.Beep(261, 250);
-
-        }
+        
 
         public static void Draw()
         {
@@ -146,8 +116,9 @@ namespace ChesseyOnlineClient
 
                         string takenMSG = Encoding.ASCII.GetString(msg.data);
 
-                        Console.WriteLine(takenMSG);
+                        //Console.WriteLine("[DEBUG]: -> " + takenMSG);
 
+                        // START GAME MESSAGE
                         if (takenMSG == "all.connected")
                         {
                             Console.Clear();
@@ -156,9 +127,32 @@ namespace ChesseyOnlineClient
 
                             LoginScreen.Start();
 
-                            PlaySound();
+                            music.PlaySound();
+
                         }
 
+                        if (isGameStart == false && (takenMSG == "RED" || takenMSG == "YELLOW"))
+                        {
+                            //ATTACH TEAM MESSAGE
+                            
+                            initTeam(takenMSG);
+
+                            isGameStart = true;
+                        }
+
+                        //PLAY ROUND
+                        if((takenMSG == "RED_TURN" || takenMSG == "YELLOW_TURN") && isGameStart == true)
+                        {
+                            RoundCheck(takenMSG);
+                        }
+
+                        // Console.WriteLine("My Team -> " + player.myTeam);
+
+
+
+
+
+                        //
                         break;
 
 
@@ -171,59 +165,38 @@ namespace ChesseyOnlineClient
             }
         }
 
+        public void initTeam(string takenMSG)
+        {
+            if (player.myTeam != "null")
+                return;
+
+           // Console.WriteLine("[initTeam] Taken MSG: " + takenMSG);
+
+            if (takenMSG == "RED")
+            {
+                Console.WriteLine("\nYou are RED team!");
+                player.myTeam = "RED";
+            }
+            else if (takenMSG == "YELLOW")
+            {
+                Console.WriteLine("\nYou are YELLOW team!");
+                player.myTeam = "YELLOW";
+            }
+
+            //Console.Clear();
+            //Draw();
+
+                SendClientMSG("CURRENT_TEAM");
+        }
+
         public void SendClientMSG(string msg)
         {
             byte[] msgc = Encoding.Default.GetBytes(msg);
 
             client.Send(msgc);
-            serverGetMsg();
+            //serverGetMsg();
         }
 
-        public void PlayerControl()
-        {
-            ConsoleKeyInfo keyinfo;
-            int x = 2;
-            int y = 2;
-
-            while (true)
-            {
-                keyinfo = Console.ReadKey();
-
-                
-
-                if (keyinfo.Key == ConsoleKey.Enter)
-                    break;
-
-                if (keyinfo.Key == ConsoleKey.RightArrow)
-                {
-                    y++;
-                    CTable.tableColor[x, y-1] = TempTable.tableColor[x, y-1];
-
-                }
-
-                if (keyinfo.Key == ConsoleKey.LeftArrow)
-                {
-                    y--;
-                    CTable.tableColor[x, y+1] = TempTable.tableColor[x, y+1];
-                }
-
-                if (keyinfo.Key == ConsoleKey.UpArrow)
-                {
-                    x--;
-                    CTable.tableColor[x + 1, y] = TempTable.tableColor[x + 1, y];
-                }
-
-                if (keyinfo.Key == ConsoleKey.DownArrow)
-                {
-                    x++;
-                    CTable.tableColor[x - 1, y] = TempTable.tableColor[x - 1, y];
-                }
-                CTable.tableColor[x, y] = 3;
-                Draw();
-
-            }
-
-
-        }
+        
     }
 }

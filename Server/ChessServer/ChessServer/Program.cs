@@ -27,8 +27,9 @@ namespace ChessServer
 
 			int session = 0;
 
+			int currentTeam = 0;
 
-			
+			bool _switch = true;
 
 			Message msg;
 
@@ -55,7 +56,7 @@ namespace ChessServer
 
 							program.UIDCheck(msg);
 
-							for (int i = 0; i < msg.connectionId; i++)
+							for (int i = 0; i <= msg.connectionId; i++)
 							{
 								program.server.Send(i, wait);
 							}
@@ -77,17 +78,45 @@ namespace ChessServer
 
 						case EventType.Data:
 
-							Console.WriteLine(Encoding.ASCII.GetString(msg.data));
+							string data = Encoding.ASCII.GetString(msg.data);
 
 							//for (int i = connectedCount; i < connectedCount; i++)
 							//program.server.Send(i, msg.data);
-							if(program.GameStarted == true)
-                            {
-								byte[] message = Encoding.Default.GetBytes(Encoding.ASCII.GetString(msg.data));
-								program.server.Send(msg.connectionId, message);
 
-								program.server.Send(msg.connectionId - 1, message);
+							if(data == "CURRENT_TEAM")
+                            {
+
+								if (_switch == true)
+								{
+									if (currentTeam == 0)
+									{
+										byte[] message = Encoding.Default.GetBytes("RED_TURN");
+
+										for(int i = 0; i <= msg.connectionId+1; i++)	
+										program.server.Send(i, message);
+
+										Console.WriteLine("RED_TURN!");
+
+										currentTeam = 1;
+									}
+									else if (currentTeam == 1)
+									{
+										byte[] message = Encoding.Default.GetBytes("YELLOW_TURN");
+
+										for (int i = 0; i <= msg.connectionId+1; i++)
+											program.server.Send(i, message);
+
+										Console.WriteLine("YELLOW_TURN!");
+
+										currentTeam = 0;
+									}
+									
+								}
+
+								_switch = !_switch;
+
 							}
+
 
 							break;
 
@@ -108,8 +137,8 @@ namespace ChessServer
 		{
 			byte[] msgc = Encoding.Default.GetBytes("all.connected");
 
-			server.Send(msg.connectionId, msgc);
-			server.Send(msg.connectionId - 1, msgc);
+			for (int i = 0; i <= msg.connectionId; i++)
+				server.Send(i, msgc);
 
 			Console.WriteLine("UID: " + msg.connectionId + " Started to the game!");
 			Console.WriteLine("UID: " + (msg.connectionId - 1) + " Started to the game!");
@@ -123,7 +152,11 @@ namespace ChessServer
 
 			byte[] uid = Encoding.Default.GetBytes("Your UID: " + msg.connectionId);
 
-				server.Send(msg.connectionId, uid);
+
+			for (int i = 0; i <= msg.connectionId; i++)
+			{
+				server.Send(i, uid);
+			}
 
 		}
 		public void RollTeam(Message msg)
@@ -137,8 +170,8 @@ namespace ChessServer
 				teamNum = rndTeam.Next(1, max_val);
 			}
 
-			byte[] msgc = Encoding.Default.GetBytes("\nYOUR TURN: ");
-			byte[] msgw = Encoding.Default.GetBytes("\nWaiting for opponent turn...");
+			byte[] msgc = Encoding.Default.GetBytes("RED");
+			byte[] msgw = Encoding.Default.GetBytes("YELLOW");
 
 			Console.WriteLine("Random team number: " + teamNum);
 
@@ -150,9 +183,10 @@ namespace ChessServer
 			}
 			else
             {
-				server.Send(msg.connectionId-1, msgc);
-
 				server.Send(msg.connectionId, msgw);
+
+				server.Send(msg.connectionId-1, msgc);
+				
 			}
 
 		}
