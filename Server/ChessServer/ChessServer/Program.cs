@@ -17,6 +17,24 @@ namespace ChessServer
 
 		public Server server = new Server();
 		public bool GameStarted = false;
+		public int def_x, def_y;
+		public int att_x, att_y;
+		public bool def_selected, att_selected = false;
+
+		/*
+		static public int[,] teamTable = new int[,]
+{
+			  {1, 1, 1, 1, 1}, // 1 red
+              {0, 1, 1, 1, 0}, // 2 yellow
+              {0, 0, 0, 0, 0},
+			  {0, 2, 2, 2, 0},
+			  {2, 2, 2, 2, 2},
+		};
+		*/
+
+		public int RedT = 8;
+		public int YellowT = 8;
+
 		static void Main(string[] args)
 		{
 			Program program = new Program();
@@ -56,7 +74,8 @@ namespace ChessServer
 
 							program.UIDCheck(msg);
 
-							for (int i = 0; i <= msg.connectionId; i++)
+							for (int
+								i = 0; i <= msg.connectionId; i++)
 							{
 								program.server.Send(i, wait);
 							}
@@ -79,7 +98,8 @@ namespace ChessServer
 						case EventType.Data:
 
 							string data = Encoding.ASCII.GetString(msg.data);
-
+							bool switch_team = false;
+							Console.WriteLine(data); // message debug
 							//for (int i = connectedCount; i < connectedCount; i++)
 							//program.server.Send(i, msg.data);
 
@@ -115,6 +135,67 @@ namespace ChessServer
 
 								_switch = !_switch;
 
+							}
+							if(data.Contains("SLCT"))
+                            {
+								/*
+								Console.WriteLine("[DEBUG] ->"+ data.Substring(5,1));
+								Console.WriteLine("[DEBUG] ->" + data.Substring(6, 1));
+								Console.WriteLine("[DEBUG] ->" + data.Substring(7, 1));
+								*/
+								string wType = data.Substring(5,1);
+								string sl_x = data.Substring(6, 1);
+								string sl_y = data.Substring(7, 1);
+
+								if(wType == "D")
+                                {
+									program.def_x = Convert.ToInt32(sl_x);
+									program.def_x = Convert.ToInt32(sl_y);
+
+									program.def_selected = true;
+								} else {
+									program.att_x = Convert.ToInt32(sl_x);
+									program.att_x = Convert.ToInt32(sl_y);
+
+									program.att_selected = true;
+								}
+
+								if(program.att_selected == true && program.def_selected == true)
+                                {
+									if(program.att_x != program.def_x || program.att_y != program.def_y)
+                                    {
+										Console.WriteLine("[DEBUG] -> DESTROY");
+
+										byte[] msgDestroy = Encoding.Default.GetBytes("DEST_" + sl_x + sl_y);
+
+										for (int i = 0; i <= msg.connectionId + 1; i++)
+											program.server.Send(i, msgDestroy);
+
+										program.def_selected = false;
+										program.att_selected = false;
+
+										if (currentTeam == 0)
+											program.RedT -= 1;
+										else if (currentTeam == 1)
+											program.YellowT -= 1;
+
+										Console.WriteLine("[REDT] => " + program.RedT);
+										Console.WriteLine("[YELLOWT] => " + program.YellowT);
+
+									} else
+                                    {
+										Console.WriteLine("[DEBUG] -> PASS");
+
+										byte[] msgPass = Encoding.Default.GetBytes("PASS");
+
+										for (int i = 0; i <= msg.connectionId + 1; i++)
+											program.server.Send(i, msgPass);
+
+										program.def_selected = false;
+										program.att_selected = false;
+
+									}
+                                }
 							}
 
 

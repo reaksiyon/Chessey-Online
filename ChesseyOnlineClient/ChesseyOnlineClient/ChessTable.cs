@@ -10,6 +10,9 @@ namespace ChesseyOnlineClient
 {
     class ChessTable
     {
+        public String L1 = "";
+        public String L2 = "";
+        public String L3 = "";
 
         public char[,] table = new char[,]
        {
@@ -22,12 +25,22 @@ namespace ChesseyOnlineClient
 
        public int[,] tableColor = new int[,]
        {
-              {1, 1, 1, 1, 1},
-              {0, 1, 1, 1, 0},
+              {1, 1, 1, 1, 1}, // 1 red
+              {0, 1, 1, 1, 0}, // 2 yellow
               {0, 0, 0, 0, 0},
               {0, 2, 2, 2, 0},
               {2, 2, 2, 2, 2},
        };
+
+       public int[,] TeamTable = new int[,]
+        {
+              {1, 1, 1, 1, 1}, // 1 red team
+              {0, 1, 1, 1, 0}, // 2 yellow team
+              {0, 0, 0, 0, 0},
+              {0, 2, 2, 2, 0},
+              {2, 2, 2, 2, 2},
+        };
+
 
         public void Draw()
         {
@@ -54,13 +67,17 @@ namespace ChesseyOnlineClient
                         Console.Write(table[i, j], Color.Yellow);
                     } else
                     {
-                        Console.Write(table[i, j], Color.Blue);
+                        Console.Write(table[i, j], Color.Orange);
                     }
 
                     Console.Write(" ");
                 }
                 Console.WriteLine();
             }
+
+            Console.WriteLine(L1, Color.LightGreen);
+            Console.WriteLine(L2, Color.Aqua);
+            Console.WriteLine(L3, Color.Gold);
 
         }
 
@@ -80,7 +97,7 @@ namespace ChesseyOnlineClient
                     //Console.ForegroundColor = randomColor;
                     Console.Write(table[i, j] + "  ", ColorList[j]);
 
-                    System.Threading.Thread.Sleep(250);
+                    System.Threading.Thread.Sleep(200);
                 }
                 Console.WriteLine();
             }

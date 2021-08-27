@@ -21,6 +21,8 @@ namespace ChesseyOnlineClient
         Telepathy.Client client = new Telepathy.Client();
         Telepathy.Message msg;
 
+        
+
         bool isGameStart = false;
 
         static void Main(string[] args)
@@ -48,6 +50,12 @@ namespace ChesseyOnlineClient
             {
                 program.serverGetMsg();
                 Thread.Sleep(50);
+                if(player.process == 1)
+                {
+                    Console.WriteLine("[DEBUG] ->" + player.warType.ToString() + player.sl_x.ToString() + player.sl_y.ToString());
+                    program.SendClientMSG("SLCT_" + player.warType.ToString() + player.sl_x.ToString() + player.sl_y.ToString());
+                    player.process = 0;
+                }
             }
         }
 
@@ -116,7 +124,7 @@ namespace ChesseyOnlineClient
 
                         string takenMSG = Encoding.ASCII.GetString(msg.data);
 
-                        //Console.WriteLine("[DEBUG]: -> " + takenMSG);
+                        Console.WriteLine("[DEBUG]: -> " + takenMSG);
 
                         // START GAME MESSAGE
                         if (takenMSG == "all.connected")
@@ -148,7 +156,18 @@ namespace ChesseyOnlineClient
 
                         // Console.WriteLine("My Team -> " + player.myTeam);
 
-
+                        if(takenMSG.Contains("DEST"))
+                        {
+                            CTable.table[Convert.ToInt32(takenMSG.Substring(5, 1)), Convert.ToInt32(takenMSG.Substring(6, 1))] = '■';
+                            //CTable.tableColor = CTable.TeamTable;
+                            //CTable.Draw();
+                            SendClientMSG("CURRENT_TEAM");
+                        } else if(takenMSG.Contains("PASS"))
+                        {
+                            //CTable.tableColor = CTable.TeamTable;
+                            //CTable.Draw();
+                            SendClientMSG("CURRENT_TEAM");
+                        }
 
 
 
@@ -174,13 +193,17 @@ namespace ChesseyOnlineClient
 
             if (takenMSG == "RED")
             {
-                Console.WriteLine("\nYou are RED team!");
+                //Console.WriteLine("\nYou are RED team!");
                 player.myTeam = "RED";
+                CTable.L1 = "You are RED team!";
+                //Program.Draw();
             }
             else if (takenMSG == "YELLOW")
             {
-                Console.WriteLine("\nYou are YELLOW team!");
+                //Console.WriteLine("\nYou are YELLOW team!");
                 player.myTeam = "YELLOW";
+                CTable.L1 = "You are YELLOW team!";
+                //Program.Draw();
             }
 
             //Console.Clear();
@@ -188,6 +211,7 @@ namespace ChesseyOnlineClient
 
                 SendClientMSG("CURRENT_TEAM");
         }
+        
 
         public void SendClientMSG(string msg)
         {
